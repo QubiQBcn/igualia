@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+<!-- Removing Filters / Field that would make no sense on the Contact Context -->
+<record id="ir_attachment_view_search_document_partner" model="ir.ui.view">
+        <field name="name">ir.attachment.view.search.document.partner</field>
+        <field name="model">ir.attachment</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="base.view_attachment_search" />
+        <field name="arch" type="xml">
+            <field name="create_date" position="after">
+                <field name="index_content" string="Content" />
+            </field>
+            <xpath expr="//filter[@name='my_documents_filter']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='url_filter']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='binary_filter']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+        </field>
+</record>
+
+<!-- Attachment FORM -->
+<record id="view_attachment_form_document_partner" model="ir.ui.view">
+    <field name="name">view.attachment.form.document.partner</field>
+    <field name="model">ir.attachment</field>
+    <field name="arch" type="xml">
+        <form string="Attachments">
+            <sheet>
+                <div class="px-5" style="justify-content: center;">
+                    <h1 class="d-flex justify-content-center pt-3 form-title">
+                        <label for="attachment_name" class="oe_edit_only"/>
+                        <field name='attachment_name'  nolabel="1" required="1"/>
+                    </h1>
+                    <hr class="hr-pretty"/>
+                    <separator/>
+
+                    <group id="ir_attachment_main_group">
+
+                        <group name="ir_attachment_data" string="Data" class="enterprise-override">
+                            <field name="name" string="File Name"/>
+                            <field name="datas" filename="name" attrs="{'invisible':[('type','=','url')]}"/>
+                            <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+                            <field name="type"/>
+                            <field name="mimetype" />
+
+                            <label for="create_uid" string="Creation"/>
+                            <div name="creation_div">
+                                <field name="create_uid" readonly="1" class="oe_inline"/> on
+                                <field name="create_date" readonly="1" class="oe_inline"/>
+                            </div>
+
+                        </group>
+
+                        <group name="ir_attachment_attached_to" string="Attached To" class="enterprise-override">
+                            <field name="res_id"/>
+                            <field name="res_name"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="public"/>
+                        </group>
+
+                    </group>
+
+                    <notebook id="ir_attachment_form_notebook"  class="pb-5 px-5">
+
+                        <page name="description_page"  string="Description">
+                             <group name="description_group" string="Description"  colspan="4">
+                                <field name="description" nolabel="1"/>
+                            </group>
+                        </page>
+
+                        <page name="index_content_page"  string="Indexed Content">
+                             <group  string="Indexed Content" colspan="4">
+                                <field name="index_content" nolabel="1"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+
+
+                </div>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+
+</odoo>

@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<record id="view_project_task_user_form" model="ir.ui.view">
+    <field name="name">view.project.task.user.form</field>
+    <field name="model">project.project</field>
+    <field name='inherit_id' ref='project.edit_project'/>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+
+        <xpath expr="//div[@name='options_active']" position="replace">
+
+            <div name="options_active">
+                <div>
+                    <label for="label_tasks" class="oe_inline" string="Name of the tasks :"/>
+                    <field name="label_tasks" class="oe_inline oe_input_align"/>
+                </div>
+                <group>
+
+                </group>
+            </div>
+            <hr/>
+
+        </xpath>
+
+
+        <xpath expr="//field[@name='user_id']" position="replace">
+
+            <field name="user_id" string="Project User"/>
+            <field name="task_user_id_no_limit" string="Task User"/>
+            <hr/>
+
+            <!-- # NOTE: It shold be task_employee_id_hr was named by mistake but WARN: Do not change the name because will delete all existing record!!!!-->
+            <field name="employee_id_manager" string="Manager" attrs="{'readonly':[('active','=',False)]}" />
+            <field name="user_id_hr" string="Project Managers" attrs="{'readonly':[('active','=',False)]}"  widget="many2many_tags"  options="{'color_field': 'color'}"/>
+            <field name="task_user_id_hr" widget="many2many_tags"  options="{'color_field': 'color'}" />
+            <button string="Update Tasks User"
+            name="update_task_responsable"
+            type="object"
+            colspan="2" />
+        </xpath>
+
+        <field name="sale_line_id" position="after">
+            <field name="sale_user_id" string="Salesperson"/>
+            <field name="sale_agent_id" string="Agent"/>
+        </field>
+
+    <field name="type_id" position="replace"/>
+
+         <!--  from module: project_description      -->
+    <xpath expr="//page[@name='settings']" position="before">
+        <page name="page_project_type" string="Type">
+
+            <group>
+                <field name="type_id" string="Project Type" />
+                <field name="project_type_category" string="Project Category Type" />
+            </group>
+
+            <group col="1">
+                <!-- PLAN DE IGUALDAD -->
+                <group name="group_1" string="PLAN DE IGUALDAD" col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_de_igualdad')]}">
+                    <field name="one__solicitud_de_datos_alta_plataforma" string="Solicitud de datos/ Alta Plataforma"/>
+                    <field name="one__recepcion_de_datos_cuanti_cuali" string="Recepción de datos  Cuanti /Cuali"/>
+                    <field name="one__1_revision_datos" string="1ª Revisión Datos"/>
+                    <field name="one__2_revision_datos" string="2ª Revisión Datos"/>
+                    <field name="one__prevision_de_entrega" string="Previsión de entrega"/>
+                    <field name="one__real_de_entrega" string="Real de entrega"/>
+                    <field name="one_s_o_n_de_modificaciones" string="Nº de modificaciones"/>
+                    <field name="one__final_de_entrega" string="Final de entrega"/>
+                    <field name="one_reunion_presentacion_plan_a_empresa" string="Reunión Presentación Plan a empresa"/>
+                    <field name="one_reunion_constitucion_comision_nego" string="Reunión Constitución Comisión Nego"/>
+                    <field name="one_anotaciones" string="Anotaciones"/>
+                    <field name="one_acta" string="ACTA" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]"/>
+                    <field name="one__1_reunion_cn" string="1ª reunión CN"/>
+                    <field name="one__2_reunion_cn" string="2ª reunión CN"/>
+                    <field name="one__3_reunion_cn" string="3ª reunión CN"/>
+                    <field name="one__4_reunion" string="4ª reunión – notificación al cliente"/>
+                    <field name="one_notificacion_al_client" string="Notificación al cliente"/>
+                    <field name="one__diagnostico_firmado" string="Diagnóstico Firmado"/>
+                    <field name="one__plan_firmado" string="Plan Firmado"/>
+                </group>
+
+                <!-- Plan (No Registrado)/Medidas de Igualdad -->
+                <group name="group_2" string="Plan (No Registrado)/Medidas de Igualdad"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_no_registradomedidas_de_igualdad')]}">
+                    <field name="two__solicitud_de_datos_alta_plataforma" string="Solicitud de datos/ Alta Plataforma"/>
+                    <field name="two__recepcion_de_datos_cuanti_cuali" string="Recepción de datos  Cuanti /Cuali"/>
+                    <field name="two__1_revision_datos" string="1ª Revisión Datos"/>
+                    <field name="two__2_revision_datos" string="2ª Revisión Datos"/>
+                    <field name="two__prevision_de_entrega" string="Previsión de entrega"/>
+                    <field name="two__real_de_entrega" string="Real de entrega"/>
+                    <field name="two_n_de_modificaciones" string="Nº de modificaciones"/>
+                    <field name="two__final_de_entrega" string="Final de entrega"/>
+                    <field name="two_reunion_presentacion_plan_a_la_empresa" string="Reunión Presentación Plan a la Empresa"/>
+                    <field name="two__diagnostico_firmado" string="Diagnóstico Firmado"/>
+                    <field name="two__plan_firmado" string="Plan Firmado"/>
+                </group>
+
+                <!-- SEGUIMIENTO IGUALDAD CI -->
+                <group name="group_3" string="SEGUIMIENTO IGUALDAD CI" col="2" attrs="{'invisible': [('project_type_category', '!=', 'seguimiento_igualdad_ci')]}">
+
+
+                    <!--          First Year          -->
+                    <group string="1er Año">
+                        <field name="year_first__trimestral" string="Trimestral"/>
+                        <field name="year_first_first_reunion" string="1º Reunión (1T)"/>
+                        <field name="year_first_second_reunion" string="2ª Reunión(2T)"/>
+                        <field name="year_first_third_reunion" string="3º Reunión (3T)"/>
+                        <field name="year_first_fourth_reunion" string="4º Reunión(4T)"/>
+                        <field name="year_first_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]"
+                        mode="tree">
+                            <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                <field name="name" string="File Name"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <!--          Second Year          -->
+                    <group string="2º Año">
+                        <field name="year_second__trimestral" string="Trimestral"/>
+                        <field name="year_second_first_reunion" string="1º Reunión (1T)"/>
+                        <field name="year_second_second_reunion" string="2ª Reunión(2T)"/>
+                        <field name="year_second_third_reunion" string="3º Reunión (3T)"/>
+                        <field name="year_second_fourth_reunion" string="4º Reunión(4T)"/>
+                        <field name="year_second_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                            <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                <field name="name" string="File Name"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <!--          Third Year          -->
+
+                    <group  string="3er  Año">
+                        <field name="year_third__trimestral" string="Trimestral"/>
+                        <field name="year_third_first_reunion" string="1º Reunión (1T)"/>
+                        <field name="year_third_second_reunion" string="2ª Reunión(2T)"/>
+                        <field name="year_third_third_reunion" string="3º Reunión (3T)"/>
+                        <field name="year_third_fourth_reunion" string="4º Reunión(4T)"/>
+                        <field name="year_third_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                            <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                <field name="name" string="File Name"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <!--          Fourth Year          -->
+
+                    <group  string="4to Año">
+                        <field name="year_fourth__trimestral" string="Trimestral"/>
+                        <field name="year_fourth_first_reunion" string="1º Reunión (1T)"/>
+                        <field name="year_fourth_second_reunion" string="2ª Reunión(2T)"/>
+                        <field name="year_fourth_third_reunion" string="3º Reunión (3T)"/>
+                        <field name="year_fourth_fourth_reunion" string="4º Reunión(4T)"/>
+                        <field name="year_fourth_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                            <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                <field name="name" string="File Name"/>
+                            </tree>
+                        </field>
+                    </group>
+
+
+                </group>
+
+                <!-- Registro de Plan en REGCON -->
+               <group name="group_4" string="Registro de Plan en REGCON"  col="6" attrs="{'invisible': [('project_type_category', '!=', 'registro_de_plan_en_regcon')]}">
+                    <field name="four__recepcion_de_documentacion_completa" string="Recepción de documentación completa" style="width:70%%;"/>
+                    <!--          Dependency Start          -->
+                    <field name="four__presentacion_registro" string=" Presentación Registro" style="width:70%%;"/>
+                    <field name="four_acuse_de_recibo" string="Acuse de Recibo" attrs="{'readonly': [('four__presentacion_registro', '=', False)]}" style="width:70%%;"/>
+                    <!--          **** Dependency End          -->
+
+
+                    <!--          Dependency Start          -->
+                    <field name="four__notificacion_1er_requerimiento" string="Notificación 1er Requerimiento" style="width:70%%;"/>
+                    <field name="four_contestacion_1er_requerimiento" string="Contestación 1er Requerimiento" attrs="{'readonly': [('four__notificacion_1er_requerimiento', '=', False)]}" style="width:70%%;"/>
+                    <field name="four_notificaciones_1er" string="Notificaciones" attrs="{'readonly': ['&amp;', ('four__notificacion_1er_requerimiento', '=', False)], 'invisible': [('four_contestacion_1er_requerimiento', '=', False)]}"
+                    domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree" style="width:70%%;">
+                        <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                            <field name="name" string="File Name"/>
+                        </tree>
+                    </field>
+                    <!--          **** Dependency End          -->
+
+
+                    <!--          Dependency Start          -->
+                    <field name="four__notificacion_2er_requerimiento" string="Notificación 2º Requerimiento" style="width:70%%;"/>
+                    <field name="four_contestacion_2er_requerimiento" string="Contestación 2º Requerimiento" attrs="{'readonly': [('four__notificacion_2er_requerimiento', '=', False)]}" style="width:70%%;"/>
+                    <field name="four_notificaciones_2er" string="Notificaciones" attrs="{'readonly': ['&amp;', ('four__notificacion_2er_requerimiento', '=', False)], 'invisible': [('four_contestacion_2er_requerimiento', '=', False)]}"
+                     domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree" style="width:70%%;">
+                        <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                            <field name="name" string="File Name"/>
+                        </tree>
+                    </field>
+                    <!--          **** Dependency End          -->
+
+                    <!--          10.37 New fields added       -->
+                    <!--          Dependency Start          -->
+                    <field name="four__notificacion_3er_requerimiento" string="Notificación 3º Requerimiento" style="width:70%%;"/>
+                    <field name="four_contestacion_3er_requerimiento" string="Contestación 3º Requerimiento" attrs="{'readonly': [('four__notificacion_3er_requerimiento', '=', False)]}" style="width:70%%;"/>
+                    <!--          **** Dependency End          -->
+                   <!--          END 10.37 New fields added       -->
+
+                    <!--          Dependency Start          -->
+
+                    <field name="four_notificacion_3rd" string="Notificación" attrs="{'readonly': [('four__notificacion_3er_requerimiento', '=', False)]}"
+                    domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree" style="width:70%%;">
+                        <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                            <field name="name" string="File Name"/>
+                        </tree>
+                    </field>
+                    <!--          **** Dependency End          -->
+
+                   <!--          10.37 New fields added       -->
+                    <!--          Dependency Start          -->
+                    <field name="four__notificacion_4er_requerimiento" string="Notificación 4º Requerimiento" style="width:70%%;"/>
+                    <field name="four_contestacion_4er_requerimiento" string="Contestación 4º Requerimiento" attrs="{'readonly': [('four__notificacion_4er_requerimiento', '=', False)]}" style="width:70%%;"/>
+                    <!--          **** Dependency End          -->
+                   <!--          END 10.37 New fields added       -->
+
+                   <field name="four__inscripcion_plan_a_registro" string=" Inscripción Plan a Registro" style="width:70%%;"/>
+                    <field name="four__archivo_o_desestimiento" string=" Archivo o Desestento" style="width:70%%;"/>
+                </group>
+
+                <!-- Registro Retributivo -->
+                <group name="group_5" string="Registro Retributivo"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'registro_retributivo')]}">
+                    <field name="five__solicitud_de_datos" string="Solicitud de datos"/>
+                    <field name="five__recepcion_de_datos" string="Recepción de datos"/>
+                    <field name="five_revision" string="Revisión"/>
+                    <field name="five__prevision_de_entrega_mensaje" string="Previsión de entrega: Mensaje"/>
+                    <field name="five__real_de_entrega" string="Real de entrega"/>
+                    <field name="five_n_de_modificaciones" string="Nº de modificaciones"/>
+                    <field name="five__final_de_entrega" string="Final de entrega"/>
+                </group>
+
+                <!-- Auditoria Retributiva (VPT+ INFORME) -->
+                <group name="group_6" string="Auditoria Retributiva (VPT+ INFORME)"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'auditoria_retributiva_vpt_informe')]}">
+                    <field name="six__solicitud_de_datosalta_plataforma" string="Solicitud de datos/Alta Plataforma"/>
+                    <field name="six__recepcion_de_datos" string="Recepción de datos"/>
+                    <field name="six_n_dpts" string="NºDPTS"/>
+                    <field name="six_revision" string="Revisión "/>
+                    <field name="six__prevision_de_entrega_informe_" string="Previsión de entrega informe "/>
+                    <field name="six__real_de_entrega_informe" string="Real de entrega informe"/>
+                    <field name="six_n_de_modificaciones" string="Nº de modificaciones"/>
+                    <field name="six__final_de_entrega_informe" string="Final de entrega Informe"/>
+                </group>
+                <!-- Investigación y Análisis ACOSO Sexual /Laboral -->
+                <group name="group_7" string="Investigación y Análisis ACOSO Sexual /Laboral"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'investigacion_y_analisis_acoso_sexual_laboral')]}">
+                    <field name="seven__recepcion_datos_de_contacto" string="Recepción datos de contacto"/>
+                    <field name="seven__contacto_persona_denunciante" string="Contacto persona denunciante"/>
+                    <field name="seven__entrevista_persona_denunciante" string="Entrevista persona denunciante"/>
+                    <field name="seven__contacto_persona_denunciada" string="Contacto persona denunciada"/>
+                    <field name="seven__entrevista_persona_denunciada" string="Entrevista persona denunciada"/>
+                    <field name="seven_contacto_testigos" string="Contacto testigos"  widget="radio"/>
+                    <field name="seven_entrevista_testigos" string="Entrevista testigos" widget="radio"/>
+                    <field name="seven_envio_informe_final" string="Envío informe final"/>
+                </group>
+                <!-- 8) GENERAL SERVICIOS -->
+                <group name="group_8" string="8) GENERAL SERVICIOS" col="4" attrs="{'invisible': [('project_type_category', '!=', 'general_servicios')]}">
+                    <field name="eight_recepcion_documentacion_datos" string="Recepción Documentación/Datos"/>
+                    <field name="eight_revision" string="Revisión"/>
+                    <field name="eight_entrega_informe" string="Entrega Informe"/>
+                </group>
+                <!--  9) PROTOCOLO ACOSO SEXUAL /LABORA  -->
+                <group name="group_9" string="9) PROTOCOLO ACOSO SEXUAL /LABORA" col="4" attrs="{'invisible': [('project_type_category', '!=', 'protocolo_acoso_sexual_labora')]}">
+                    <field name="nine_entrega_protocolo_acoso_sexual" string="Entrega protocolo acoso sexual"/>
+                    <field name="nine_entrega_protocolo_acoso_laboral" string="Entrega protocolo acoso laboral"/>
+                </group>
+                <!-- 10) GESTION DENUNCIAS ACOSO -->
+                <group name="group_10" string="10) GESTION DENUNCIAS ACOSO" col="4" attrs="{'invisible': [('project_type_category', '!=', 'gestion_denuncias_acoso')]}">
+                    <field name="ten_activacion_canal_denuncias" string="Activación canal denuncias"/>
+                </group>
+                <!--  11) MEDIDAS PREVENCION ACOSO SEXUAL -->
+                <group name="group_11" string="11) MEDIDAS PREVENCION ACOSO SEXUAL" col="4" attrs="{'invisible': [('project_type_category', '!=', 'medidas_prevencion_acoso_sexual')]}">
+                    <field name="eleven_inicio_seguimiento" string="Inicio Seguimiento"/>
+                    <field name="eleven_entrega_de_medidas_de_prevencion" string="Entrega de medidas de prevención"/>
+                </group>
+                <!--  12) PLAN NO DISCRIMINACION LGTBI -->
+                <group name="group_12" string="12) PLAN NO DISCRIMINACION LGTBI" col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_no_discriminacion_lgtbi')]}">
+                    <field name="twelve_entrega_protocolo_lgtbi" string="Entrega protocolo LGTBI"/>
+                    <field name="twelve_entrega_medidas_de_prevencion" string="Entrega medidas de prevención"/>
+                </group>
+            </group>
+
+        </page>
+    </xpath>
+
+    </field>
+</record>
+
+<!--  added itundra-->
+<record id="project_search_custom" model="ir.ui.view">
+    <field name="name">Project description</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project_project_filter" />
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+        <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+              <field name="user_id_hr" string="Project Manager"/>
+          </field>
+
+         <xpath expr="//group/filter[@name='Manager']" position="replace">
+            <filter string="Manager" name="Manager" context="{'group_by': 'employee_id_manager'}"/>
+        </xpath>
+
+    </field>
+</record>
+
+
+    <!--  added itundra-->
+<record id="view_project_custom" model="ir.ui.view">
+    <field name="name">project.project.tree.custom</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project"/>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+        <field name="user_id" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+        <field name="user_id" position="after">
+            <field name="employee_id_manager" string="Manager" optional="show" />
+            <field name="user_id_hr" string="Project Managers"  widget="many2many_tags"  options="{'color_field': 'color'}" optional="show"/>
+        </field>
+
+        <field name="company_id" position="attributes">
+             <attribute name="optional">hide</attribute>
+        </field>
+
+        <xpath expr="//tree" position="attributes">
+          <attribute name="edit">1</attribute>
+          <attribute name="multi_edit">1</attribute>
+          <attribute name="editable">top</attribute>
+        </xpath>
+
+         <!--    Registering the Custom Tree View    -->
+         <xpath expr="//tree" position="attributes">
+            <attribute name="js_class">list_multi_tab</attribute>
+         </xpath>
+
+        <xpath expr="//tree" position="inside">
+             <field name="date_order" string="Order Date" optional="hide" widget="date"/>
+        </xpath>
+
+        <xpath expr="//tree" position="inside">
+            <field name="one__prevision_de_entrega" string="1) Previsión de entrega" optional="hide"/>
+            <field name="one__1_reunion_cn" string="1ª reunión CN" optional="hide"/>
+            <field name="one__final_de_entrega" string="1) Final de entrega" optional="hide"/>
+        </xpath>
+
+
+    </field>
+
+</record>
+
+<!--  added itundra-->
+<record id="view_project_kanban_custom" model="ir.ui.view">
+    <field name="name">view.project.kanban.custom</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project_kanban"/>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+
+
+          <xpath expr="//templates" position="before">
+            <field name="date_order" />
+            <field name="project_type_category" />
+          </xpath>
+
+        <xpath expr="//div[hasclass('project_state_container')]/span[hasclass('prject_state_wrapper')]" position="before">
+            <t t-if="record.date_order.raw_value">
+                <span class="o_value"><t t-esc="moment(record.date_order.raw_value).format('L')"/></span>
+            </t>
+
+        </xpath>
+
+
+    </field>
+
+</record>
+
+        <!--  added itundra-->
+<record id="project_view_kanban_custom" model="ir.ui.view">
+    <field name="name">project.project.kanban.custom</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.project_view_kanban"/>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+        <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+              <field name="user_id_hr" string="Project Managers"  widget="many2many_tags"  options="{'color_field': 'color'}"/>
+          </field>
+
+         <xpath expr="//templates" position="replace">
+              <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_get_form">
+                        <div class="row">
+                            <div class="col-12">
+                                <strong><field name="name" string="Project Name"/></strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <field name="partner_id" string="Contact"/>
+                            </div>
+                            <div class="col-4">
+                                <div class="oe_kanban_bottom_right">
+                                    <img t-att-src="kanban_image('hr.employee', 'image_128', record.user_id_hr.raw_value)" t-att-title="record.user_id_hr.value" t-att-alt="record.user_id_hr.value" class="oe_kanban_avatar o_image_24_cover float-right"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </xpath>
+
+    </field>
+
+</record>
+
+
+
+        <!--  added itundra-->
+<record id="project_project_view_form_simplified_custom" model="ir.ui.view">
+    <field name="name">project.project.view.form.simplified.custom</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+
+        <xpath expr="//form/group/group/field[@name='user_id']" position="after">
+             <field name="user_id_hr" invisible="1"/>
+        </xpath>
+    </field>
+
+</record>
+
+
+
+
+<!--  added itundra-->
+
+<!-- ================ < Project Task > ================  -->
+<record id="project_task_code_form_view_custom" model="ir.ui.view">
+      <field name="name">project.task.code.form.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_form2" />
+      <field name="priority">1010</field>
+      <field name="arch" type="xml">
+
+
+         <xpath expr="//header" position="replace">
+            <header>
+                    <button name="action_assign_to_me" string="Assign to Me" type="object" class="oe_highlight"
+                        attrs="{'invisible' : [('user_id_hr', '!=', False)]}"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
+            </header>
+         </xpath>
+
+          <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="tag_ids" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+           <field name="type_id" position="attributes">
+              <attribute name="readonly">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+              <field name="user_id_hr" class="o_task_user_field"  widget="many2many_tags"  options="{'color_field': 'color'}"/>
+              <field name="employee_id_manager" string="Manager" attrs="{'readonly':[('active','=',False)]}" />
+          </field>
+
+          <xpath expr="//page[@name='description_page']" position="before">
+               <page name="page_project_type" string="Type">
+
+                    <group>
+<!--                        <field name="type_id" string="Project Type" domain="[('is_company_project_category_type', '=', True)]" readonly="1"/>-->
+                        <field name="project_type_category" string="Project Type" readonly="1" />
+                    </group>
+
+                    <group col="1">
+                        <!-- PLAN DE IGUALDAD -->
+                        <group name="group_1" string="1) PLAN DE IGUALDAD" col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_de_igualdad')]}">
+                            <field name="one__solicitud_de_datos_alta_plataforma" string="Solicitud de datos/ Alta Plataforma"/>
+                            <field name="one__recepcion_de_datos_cuanti_cuali" string="Recepción de datos  Cuanti /Cuali"/>
+                            <field name="one__1_revision_datos" string="1ª Revisión Datos"/>
+                            <field name="one__2_revision_datos" string="2ª Revisión Datos"/>
+                            <field name="one__prevision_de_entrega" string="Previsión de entrega"/>
+                            <field name="one__real_de_entrega" string="Real de entrega"/>
+                            <field name="one_s_o_n_de_modificaciones" string="Nº de modificaciones"/>
+                            <field name="one__final_de_entrega" string="Final de entrega"/>
+                            <field name="one_reunion_presentacion_plan_a_empresa" string="Reunión Presentación Plan a empresa"/>
+                            <field name="one_reunion_constitucion_comision_nego" string="Reunión Constitución Comisión Nego"/>
+                            <field name="one_anotaciones" string="Anotaciones"/>
+                            <field name="one_acta" string="ACTA" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]"/>
+                            <field name="one__1_reunion_cn" string="1ª reunión CN"/>
+                            <field name="one__2_reunion_cn" string="2ª reunión CN"/>
+                            <field name="one__3_reunion_cn" string="3ª reunión CN"/>
+                            <field name="one__4_reunion" string="4ª reunión – notificación al cliente"/>
+                            <field name="one_notificacion_al_client" string="Notificación al cliente"/>
+                            <field name="one__diagnostico_firmado" string="Diagnóstico Firmado"/>
+                            <field name="one__plan_firmado" string="Plan Firmado"/>
+                        </group>
+
+                        <!-- Plan (No Registrado)/Medidas de Igualdad -->
+                        <group name="group_2" string="2) Plan (No Registrado)/Medidas de Igualdad"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_no_registradomedidas_de_igualdad')]}">
+                            <field name="two__solicitud_de_datos_alta_plataforma" string="Solicitud de datos/ Alta Plataforma"/>
+                            <field name="two__recepcion_de_datos_cuanti_cuali" string="Recepción de datos  Cuanti /Cuali"/>
+                            <field name="two__1_revision_datos" string="1ª Revisión Datos"/>
+                            <field name="two__2_revision_datos" string="2ª Revisión Datos"/>
+                            <field name="two__prevision_de_entrega" string="Previsión de entrega"/>
+                            <field name="two__real_de_entrega" string="Real de entrega"/>
+                            <field name="two_n_de_modificaciones" string="Nº de modificaciones"/>
+                            <field name="two__final_de_entrega" string="Final de entrega"/>
+                            <field name="two_reunion_presentacion_plan_a_la_empresa" string="Reunión Presentación Plan a la Empresa"/>
+                            <field name="two__diagnostico_firmado" string="Diagnóstico Firmado"/>
+                            <field name="two__plan_firmado" string="Plan Firmado"/>
+                        </group>
+
+                        <!-- SEGUIMIENTO IGUALDAD CI -->
+                        <group name="group_3" string="3) SEGUIMIENTO IGUALDAD CI" col="2" attrs="{'invisible': [('project_type_category', '!=', 'seguimiento_igualdad_ci')]}">
+
+
+                            <!--          First Year          -->
+                            <group string="1er Año">
+                                <field name="year_first__trimestral" string="Trimestral"/>
+                                <field name="year_first_first_reunion" string="1º Reunión (1T)"/>
+                                <field name="year_first_second_reunion" string="2ª Reunión(2T)"/>
+                                <field name="year_first_third_reunion" string="3º Reunión (3T)"/>
+                                <field name="year_first_fourth_reunion" string="4º Reunión(4T)"/>
+                                <field name="year_first_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]"
+                                mode="tree">
+                                    <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                        <field name="name" string="File Name"/>
+                                    </tree>
+                                </field>
+                            </group>
+
+                            <!--          Second Year          -->
+                            <group string="2º Año">
+                                <field name="year_second__trimestral" string="Trimestral"/>
+                                <field name="year_second_first_reunion" string="1º Reunión (1T)"/>
+                                <field name="year_second_second_reunion" string="2ª Reunión(2T)"/>
+                                <field name="year_second_third_reunion" string="3º Reunión (3T)"/>
+                                <field name="year_second_fourth_reunion" string="4º Reunión(4T)"/>
+                                <field name="year_second_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                    <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                        <field name="name" string="File Name"/>
+                                    </tree>
+                                </field>
+                            </group>
+
+                            <!--          Third Year          -->
+
+                            <group  string="3er  Año">
+                                <field name="year_third__trimestral" string="Trimestral"/>
+                                <field name="year_third_first_reunion" string="1º Reunión (1T)"/>
+                                <field name="year_third_second_reunion" string="2ª Reunión(2T)"/>
+                                <field name="year_third_third_reunion" string="3º Reunión (3T)"/>
+                                <field name="year_third_fourth_reunion" string="4º Reunión(4T)"/>
+                                <field name="year_third_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                    <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                        <field name="name" string="File Name"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <!--          Fourth Year          -->
+
+                            <group  string="4to Año">
+                                <field name="year_fourth__trimestral" string="Trimestral"/>
+                                <field name="year_fourth_first_reunion" string="1º Reunión (1T)"/>
+                                <field name="year_fourth_second_reunion" string="2ª Reunión(2T)"/>
+                                <field name="year_fourth_third_reunion" string="3º Reunión (3T)"/>
+                                <field name="year_fourth_fourth_reunion" string="4º Reunión(4T)"/>
+                                <field name="year_fourth_actas" string="ACTAS" domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                    <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                        <field name="name" string="File Name"/>
+                                    </tree>
+                                </field>
+                            </group>
+
+
+                        </group>
+
+                        <!-- Registro de Plan en REGCON -->
+                       <group name="group_4" string="4) Registro de Plan en REGCON"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'registro_de_plan_en_regcon')]}">
+                            <field name="four__recepcion_de_documentacion_completa" string="Recepción de documentación completa"/>
+                            <!--          Dependency Start          -->
+                            <field name="four__presentacion_registro" string="Presentación Registro"/>
+                            <field name="four_acuse_de_recibo" string="Acuse de Recibo" attrs="{'readonly': [('four__presentacion_registro', '=', False)]}"/>
+                            <!--          **** Dependency End          -->
+
+
+                            <!--          Dependency Start          -->
+                            <field name="four__notificacion_1er_requerimiento" string="Notificación 1er Requerimiento"/>
+                            <field name="four_contestacion_1er_requerimiento" string="Contestación 1er Requerimiento" attrs="{'readonly': [('four__notificacion_1er_requerimiento', '=', False)]}"/>
+                            <field name="four_notificaciones_1er" string="Notificaciones" attrs="{'readonly': ['&amp;', ('four__notificacion_1er_requerimiento', '=', False)], 'invisible': [('four_contestacion_1er_requerimiento', '=', False)]}"
+                            domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                    <field name="name" string="File Name"/>
+                                </tree>
+                            </field>
+                            <!--          **** Dependency End          -->
+
+
+                            <!--          Dependency Start          -->
+                            <field name="four__notificacion_2er_requerimiento" string="Notificación 2º Requerimiento"/>
+                            <field name="four_contestacion_2er_requerimiento" string="Contestación 2º Requerimiento" attrs="{'readonly': [('four__notificacion_2er_requerimiento', '=', False)]}"/>
+                            <field name="four_notificaciones_2er" string="Notificaciones" attrs="{'readonly': ['&amp;', ('four__notificacion_2er_requerimiento', '=', False)], 'invisible': [('four_contestacion_2er_requerimiento', '=', False)]}"
+                             domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                    <field name="name" string="File Name"/>
+                                </tree>
+                            </field>
+                            <!--          **** Dependency End          -->
+
+                            <!--          10.37 New fields added       -->
+                            <!--          Dependency Start          -->
+                            <field name="four__notificacion_3er_requerimiento" string="Notificación 3º Requerimiento"/>
+                            <field name="four_contestacion_3er_requerimiento" string="Contestación 3º Requerimiento" attrs="{'readonly': [('four__notificacion_3er_requerimiento', '=', False)]}"/>
+                            <!--          **** Dependency End          -->
+                            <!--          END 10.37 New fields added       -->
+
+                            <!--          Dependency Start          -->
+                            <field name="four__inscripcion_plan_a_registro" string=" Inscripción Plan a Registro"/>
+                            <field name="four_notificacion_3rd" string="Notificación" attrs="{'readonly': [('four__inscripcion_plan_a_registro', '=', False)]}"
+                            domain="[('res_model', '=', 'res.partner'), ('res_id', '=', partner_id)]" mode="tree">
+                                <tree editable="top" create="true" delete="true" expand="1"  multi_edit="1" >
+                                    <field name="name" string="File Name"/>
+                                </tree>
+                            </field>
+                            <!--          **** Dependency End          -->
+
+                            <!--          10.37 New fields added       -->
+                            <!--          Dependency Start          -->
+                            <field name="four__notificacion_4er_requerimiento" string="Notificación 4º Requerimiento"/>
+                            <field name="four_contestacion_4er_requerimiento" string="Contestación 4º Requerimiento" attrs="{'readonly': [('four__notificacion_4er_requerimiento', '=', False)]}"/>
+                            <!--          **** Dependency End          -->
+                            <!--          END 10.37 New fields added       -->
+
+                            <field name="four__archivo_o_desestimiento" string=" Archivo o Desestento"/>
+                        </group>
+
+                        <!-- Registro Retributivo -->
+                        <group name="group_5" string="5) Registro Retributivo"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'registro_retributivo')]}">
+                            <field name="five__solicitud_de_datos" string="Solicitud de datos"/>
+                            <field name="five__recepcion_de_datos" string="Recepción de datos"/>
+                            <field name="five_revision" string="Revisión"/>
+                            <field name="five__prevision_de_entrega_mensaje" string="Previsión de entrega: Mensaje"/>
+                            <field name="five__real_de_entrega" string="Real de entrega"/>
+                            <field name="five_n_de_modificaciones" string="Nº de modificaciones"/>
+                            <field name="five__final_de_entrega" string=" Final de entrega"/>
+                        </group>
+
+                        <!-- Auditoria Retributiva (VPT+ INFORME) -->
+                        <group name="group_6" string="6) Auditoria Retributiva (VPT+ INFORME)"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'auditoria_retributiva_vpt_informe')]}">
+                            <field name="six__solicitud_de_datosalta_plataforma" string="Solicitud de datos/Alta Plataforma"/>
+                            <field name="six__recepcion_de_datos" string="Recepción de datos"/>
+                            <field name="six_n_dpts" string="NºDPTS"/>
+                            <field name="six_revision" string="Revisión "/>
+                            <field name="six__prevision_de_entrega_informe_" string="Previsión de entrega informe "/>
+                            <field name="six__real_de_entrega_informe" string="Real de entrega informe"/>
+                            <field name="six_n_de_modificaciones" string="Nº de modificaciones"/>
+                            <field name="six__final_de_entrega_informe" string="Final de entrega Informe"/>
+                        </group>
+                        <!-- Investigación y Análisis ACOSO Sexual /Laboral -->
+                        <group name="group_7" string="7) Investigación y Análisis ACOSO Sexual /Laboral"  col="4" attrs="{'invisible': [('project_type_category', '!=', 'investigacion_y_analisis_acoso_sexual_laboral')]}">
+                            <field name="seven__recepcion_datos_de_contacto" string="Recepción datos de contacto"/>
+                            <field name="seven__contacto_persona_denunciante" string="Contacto persona denunciante"/>
+                            <field name="seven__entrevista_persona_denunciante" string="Entrevista persona denunciante"/>
+                            <field name="seven__contacto_persona_denunciada" string="Contacto persona denunciada"/>
+                            <field name="seven__entrevista_persona_denunciada" string="Entrevista persona denunciada"/>
+                            <field name="seven_contacto_testigos" string="Contacto testigos"  widget="radio"/>
+                            <field name="seven_entrevista_testigos" string="Entrevista testigos" widget="radio"/>
+                            <field name="seven_envio_informe_final" string="Envío informe final"/>
+                        </group>
+                        <!-- 8) GENERAL SERVICIOS -->
+                        <group name="group_8" string="8) GENERAL SERVICIOS" col="4" attrs="{'invisible': [('project_type_category', '!=', 'general_servicios')]}">
+                            <field name="eight_recepcion_documentacion_datos" string="Recepción Documentación/Datos"/>
+                            <field name="eight_revision" string="Revisión"/>
+                            <field name="eight_entrega_informe" string="Entrega Informe"/>
+                        </group>
+                        <!--  9) PROTOCOLO ACOSO SEXUAL /LABORA  -->
+                        <group name="group_9" string="9) PROTOCOLO ACOSO SEXUAL /LABORA" col="4" attrs="{'invisible': [('project_type_category', '!=', 'protocolo_acoso_sexual_labora')]}">
+                            <field name="nine_entrega_protocolo_acoso_sexual" string="Entrega protocolo acoso sexual"/>
+                            <field name="nine_entrega_protocolo_acoso_laboral" string="Entrega protocolo acoso laboral"/>
+                        </group>
+                        <!-- 10) GESTION DENUNCIAS ACOSO -->
+                        <group name="group_10" string="10) GESTION DENUNCIAS ACOSO" col="4" attrs="{'invisible': [('project_type_category', '!=', 'gestion_denuncias_acoso')]}">
+                            <field name="ten_activacion_canal_denuncias" string="Activación canal denuncias"/>
+                        </group>
+                        <!--  11) MEDIDAS PREVENCION ACOSO SEXUAL -->
+                        <group name="group_11" string="11) MEDIDAS PREVENCION ACOSO SEXUAL" col="4" attrs="{'invisible': [('project_type_category', '!=', 'medidas_prevencion_acoso_sexual')]}">
+                            <field name="eleven_inicio_seguimiento" string="Inicio Seguimiento"/>
+                            <field name="eleven_entrega_de_medidas_de_prevencion" string="Entrega de medidas de prevención"/>
+                        </group>
+                        <!--  12) PLAN NO DISCRIMINACION LGTBI -->
+                        <group name="group_12" string="12) PLAN NO DISCRIMINACION LGTBI" col="4" attrs="{'invisible': [('project_type_category', '!=', 'plan_no_discriminacion_lgtbi')]}">
+                            <field name="twelve_entrega_protocolo_lgtbi" string="Entrega protocolo LGTBI"/>
+                            <field name="twelve_entrega_medidas_de_prevencion" string="Entrega medidas de prevención"/>
+                        </group>
+
+                    </group>
+
+                </page>
+          </xpath>
+
+<!--      DEPRECATED: Delete at the next 2 version updates    -->
+<!--          <xpath expr="//group" position="after">-->
+<!--              <group name="group_customize_added_fields">-->
+<!--                <group name="group_data" >-->
+<!--                    <field name="enable_data" string="Enable Data" />-->
+<!--                    <field name="data_sent" string="Data Sent" attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_reception_quali" string="Data Reception Quali" attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_reception_quant" string="Data Reception Quant" attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_forecast" string="Data Forecast" attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_delivered" string="Data Delivered" attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_plan_delivered" string="Plan Delivered"   attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                    <field name="data_report_delivered" string="Report Delivered"   attrs="{'invisible': [('enable_data', '=', False)]}"/>-->
+<!--                </group>-->
+
+<!--                 <group name="group_data_meetings" >-->
+<!--                    <field name="enable_meetings" string="Enable Meetings" />-->
+<!--                    <field name="first_meeting" string="First Meeting" attrs="{'invisible': [('enable_meetings', '=', False)]}"/>-->
+<!--                    <field name="second_meeting" string="Second Meeting" attrs="{'invisible': [('enable_meetings', '=', False)]}"/>-->
+<!--                    <field name="third_meeting" string="Third Meeting" attrs="{'invisible': [('enable_meetings', '=', False)]}"/>-->
+<!--                    <field name="fourth_meeting" string="Fourth Meeting" attrs="{'invisible': [('enable_meetings', '=', False)]}"/>-->
+<!--                </group>-->
+<!--            </group>-->
+<!--          </xpath>-->
+
+
+      </field>
+  </record>
+
+<record id="project_task_code_search_view_custom" model="ir.ui.view">
+    <field name="name">project.task.code.search.custom</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_search_form" />
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+
+        <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+        </field>
+
+        <field name="user_id" position="after">
+            <field name="user_id_hr"/>
+        </field>
+
+        <xpath expr="//filter[@name='my_tasks']" position="replace">
+             <filter string="My Tasks" name="my_tasks" domain="[('user_id_hr', 'in', (uid,))]"/>
+        </xpath>
+
+         <xpath expr="//filter[@name='unassigned']" position="replace">
+            <filter string="Unassigned" name="unassigned" domain="[('user_id_hr', '=', False)]"/>
+        </xpath>
+
+
+    </field>
+</record>
+
+
+    <!--  added itundra-->
+<record id="quick_create_task_form_custom" model="ir.ui.view">
+      <field name="name">project.task.form.quick_create.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.quick_create_task_form" />
+      <field name="priority">1000</field>
+      <field name="arch" type="xml">
+
+          <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+              <field name="user_id_hr" widget="many2many_tags"  options="{'color_field': 'color'}"/>
+          </field>
+
+
+      </field>
+  </record>
+
+
+        <!--  added itundra-->
+<record id="view_task_kanban_custom" model="ir.ui.view">
+  <field name="name">project.task.kanban.custom</field>
+  <field name="model">project.task</field>
+  <field name="inherit_id" ref="project.view_task_kanban" />
+  <field name="priority">1000</field>
+  <field name="arch" type="xml">
+
+
+
+      <field name="user_id" position="attributes">
+          <attribute name="invisible">1</attribute>
+      </field>
+      <field name="user_id" position="after">
+          <field name="user_id_hr" />
+      </field>
+
+     <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="replace">
+        <div class="oe_kanban_bottom_right" t-if="!selection_mode">
+            <field name="kanban_state" widget="state_selection" groups="base.group_user" invisible="context.get('fsm_mode', False)" />
+               <img t-att-src="kanban_image('hr.employee', 'image_128', record.user_id_hr.raw_value)" t-att-title="record.user_id_hr.value" t-att-alt="record.user_id_hr.value" class="oe_kanban_avatar"/>
+
+        </div>
+    </xpath>
+
+
+
+  </field>
+</record>
+
+            <!--  added itundra-->
+<record id="view_task_tree2_custom" model="ir.ui.view">
+      <field name="name">project.task.tree.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_tree2" />
+      <field name="priority">1000</field>
+      <field name="arch" type="xml">
+
+        <field name="user_id" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </field>
+        <field name="user_id" position="after">
+            <field name="employee_id_manager" string="Manager" optional="show" />
+            <field name="user_id_hr" invisible="context.get('user_invisible', False)" optional="show" widget="many2many_tags"  options="{'color_field': 'color'}"/>
+            <field name="sale_user_id" string="Salesperson" optional="show"/>
+            <field name="sale_agent_id" string="Agent" optional="show"/>
+        </field>
+
+       <field name="employee_id_manager" position="before">
+            <field name="date_order" string="Order Date" optional="hide" widget="date"/>
+       </field>
+
+        <xpath expr="//tree" position="attributes">
+            <attribute name="edit">1</attribute>
+            <attribute name="multi_edit">1</attribute>
+            <attribute name="editable">top</attribute>
+            <!--    Registering the Custom Tree View    -->
+            <attribute name="js_class">list_multi_tab</attribute>
+        </xpath>
+
+        <xpath expr="//tree" position="inside">
+
+            <field name="description" string="Description" optional="hide"/>
+            <!--DEPRECATED: Delete at the next 2 version updates-->
+<!--            <field name="data_sent" string="Data Sent" optional="hide"/>-->
+<!--            <field name="data_reception_quali" string="Data Reception Quali" optional="hide"/>-->
+<!--            <field name="data_reception_quant" string="Data Reception Quant" optional="hide"/>-->
+<!--            <field name="data_forecast" string="Data Forecast" optional="hide"/>-->
+<!--            <field name="data_delivered" string="Data Delivered" optional="hide"/>-->
+<!--             <field name="data_plan_delivered" string="Plan Delivered"  optional="hide"/>-->
+<!--             <field name="data_report_delivered" string="Report Delivered"  optional="hide"/>-->
+
+<!--             <field name="first_meeting" string="First Meeting" optional="hide"/>-->
+<!--            <field name="second_meeting" string="Second Meeting" optional="hide"/>-->
+<!--            <field name="third_meeting" string="Third Meeting" optional="hide"/>-->
+<!--            <field name="fourth_meeting" string="Fourth Meeting" optional="hide"/>-->
+
+        </xpath>
+
+      </field>
+</record>
+
+
+                <!--  added itundra-->
+<record id="view_task_calendar_custom" model="ir.ui.view">
+      <field name="name">project.task.calendar.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_calendar" />
+      <field name="priority">1000</field>
+      <field name="arch" type="xml">
+
+          <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+<!--            <field name="user_id_hr" avatar_field="image_128"/>-->
+            <field name="user_id_hr" />
+          </field>
+      </field>
+</record>
+
+
+
+                <!--  added itundra-->
+<record id="view_task_calendar_custom" model="ir.ui.view">
+      <field name="name">project.task.calendar.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_calendar" />
+      <field name="priority">1000</field>
+      <field name="arch" type="xml">
+
+          <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+<!--           <field name="user_id_hr" avatar_field="image_128"/>-->
+           <field name="user_id_hr" />
+          </field>
+
+
+      </field>
+  </record>
+
+<record id="project_task_view_activity_custom" model="ir.ui.view">
+      <field name="name">project.task.activity.custom</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.project_task_view_activity" />
+      <field name="priority">1000</field>
+      <field name="arch" type="xml">
+
+          <field name="user_id" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </field>
+          <field name="user_id" position="after">
+            <field name="user_id_hr"/>
+          </field>
+
+
+           <xpath expr="//templates" position="replace">
+             <templates>
+                <div t-name="activity-box">
+                    <img t-att-src="activity_image('hr.employee', 'image_128', record.user_id_hr.raw_value)" t-att-title="record.user_id_hr.value" t-att-alt="record.user_id_hr.value"/>
+                    <div>
+                        <field name="name" display="full"/>
+                        <field name="project_id" muted="1" display="full" invisible="context.get('default_project_id', False)"/>
+                    </div>
+                </div>
+            </templates>
+        </xpath>
+
+
+      </field>
+</record>
+
+
+
+    <!-- User Form -->
+     <!--  added itundra-->
+<!--    WARN Overwritten -->
+<act_window context="{'search_default_user_id_hr': [active_id], 'default_user_id_hr': active_id}"
+            id="act_res_users_2_project_task_opened" name="Assigned Tasks"
+            res_model="project.task" view_mode="tree,form,calendar,graph"
+            binding_model="res.users" binding_views="form"/>
+
+</odoo>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--
+
+    **************************** PROJECT CHECKLIST ****************************
+
+-->
+    <!--   PROJECT TEPMPLATE|  Search  -->
+<record id="project_checklist__search_view" model="ir.ui.view">
+    <field name="name">project.checklist.search.view</field>
+    <field name="model">project.checklist</field>
+    <field name="arch" type="xml">
+        <search string="Project Check List Search">
+            <!--     Checlist Lines Fields     -->
+            <field name="check_list_line" string="Question title" />
+            <field name="check_list_line" string="Find Comment" filter_domain="[('check_list_line.comment', 'ilike', self)]"/>
+            <field name="check_list_line" string="Question Document Date" filter_domain="[('check_list_line.document_date', '=', self)]"/>
+
+             <separator/>
+            <!--     Checlist    -->
+            <field name="name" string="Name"/>
+            <field name="project_id" string="Project"/>
+            <field name="partner_id" string="Contact" />
+            <field name="company_id" string="Company" />
+            <field name="email" string="Email" />
+            <field name="sale_agent_id" string="Agent" />
+            <field name="employee_id_manager" string="Manager" />
+            <field name="user_id_hr" string="Project Managers" />
+            <separator/>
+
+            <!--     Checlist Lines Filters       -->
+            <filter name="question_filter_yes" string="Yes" domain="[('check_list_line.answer', '=', 'yes')]" />
+            <filter name="question_filter_no" string="No" domain="[('check_list_line.answer', '=', 'no')]" />
+            <filter name="question_filter_noanswer" string="No Answer" domain="[('check_list_line.answer', '=', 'no_answer')]" />
+            <separator/>
+
+            <group expand="0" string="Group By">
+                <filter string="Creation Period" name="group_create_date"
+                    context="{'group_by': 'create_date'}"/>
+                <filter string="By Contact" name="group_on_partner_id"
+                    context="{'group_by': 'partner_id'}"/>
+                <filter string="By Agent" name="sale_agent_id"
+                    context="{'group_by': 'sale_agent_id'}"/>
+                <filter string="By Manager" name="employee_id_manager"
+                    context="{'group_by': 'employee_id_manager_groupby'}"/>
+                <filter string="By Project Managers" name="user_id_hr"
+                    context="{'group_by': 'user_id_hr_groupby'}"/>
+            </group>
+
+            <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+        </search>
+    </field>
+</record>
+
+<!-- PROJECT TEPMPLATE |  Tree  -->
+<record id="project_checklist__tree_view" model="ir.ui.view">
+    <field name="name">project.checklist.tree.view</field>
+    <field name="model">project.checklist</field>
+    <field name="arch" type="xml">
+        <tree string="Project Check List Tree">
+            <field name="group_by_trigger" invisible="1"/>
+            <field name="name" string="Name"/>
+            <field name="project_id" string="Project"  widget="many2many_tags" options="{'color_field': 'color'}" />
+            <field name="partner_id" string="Contact" />
+            <field name="title" string="Title"  optional="hide"/>
+            <field name="company_id" string="Company"  optional="hide"/>
+            <field name="email" string="Email" optional="hide"/>
+            <field name="company_id" string="Agent" optional="show"/>
+            <field name="employee_id_manager_groupby" string="Manager" optional="show"/>
+            <field name="user_id_hr_groupby" string="Agent" optional="show"/>
+
+            <field name="rlt_company" string="¿Dispone la empresa de RLT? (Representación legal personas trabajadoras?"
+                   optional="hide"/>
+            <field name="rlt_all_working_place" string="¿Está presente la RLT en todos los centros de trabajo?"
+                   optional="hide"/>
+
+        </tree>
+    </field>
+</record>
+
+<!--  PROJECT TEMPLATE |  FORM  -->
+<record id="project_checklist__form_view" model="ir.ui.view">
+    <field name="name">project.checklist.form.view</field>
+    <field name="model">project.checklist</field>
+    <field name="arch" type="xml">
+        <form string="Project Check List Form" >
+
+            <header>
+                <field name="active" invisible="1"/>
+            </header>
+
+            <sheet>
+                <div class="oe_title">
+                    <div>
+                        <h3 class="d-flex justify-content-center pt-3 form-title">
+                            <field name="name" nolabel="1"/>
+                        </h3>
+                    </div>
+                 </div>
+                <group name="group_main_1">
+                    <group name="group_info_1">
+<!--                       <field name="project_id" string="Project" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" readonly="1"/>-->
+                        <field name="company_id" />
+                        <field name="partner_id" string="Contact" />
+                        <field name="title" string="Cargo" />
+                    </group>
+                    <group col="1" name="group_info_2"></group>
+
+                     <group name="group_info_3">
+                         <field name="phone" string="Telefono Oficina" />
+                        <field name="mobile" string="Telefono Móvil" />
+                    </group>
+                    <group name="group_info_4">
+                        <field name="street" string="Dirección"/>
+                        <field name="email" string="Email"/>
+                     </group>
+
+                    <group col="1" name="group_info_5">
+                        <field class="oe_inline" name="rlt_company" string="¿Dispone la empresa de RLT?" widget="radio"/>
+                    </group>
+                    <group col="1" name="group_info_6">
+                        <field class="oe_inline" name="rlt_all_working_place" string="¿Está presente la RLT en todos los centros de trabajo?" widget="radio"/>
+                    </group>
+                </group>
+
+                <group name="group_equality_data" string="DATOS DE IGUALDAD"  class="enterprise-override">
+                    <group>
+                        <field name="sale_agent_id" string="Nombre Agente de Igualdad:"/>
+                        <field name="equality_commission" string="Comisión de Igualdad:"/>
+                    </group>
+                    <group>
+                         <field name="working_people_number" string="Número de personas trabajadoras:" />
+                         <field name="work_place" string="Centros de trabajo:" />
+                         <field name="agreement" string="Convenio:" />
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Checklist" name="page_checklist_lines">
+                        <field name="check_list_line" widget="section_and_note_one2many"  mode="tree">
+                             <tree string="Checklist lines"
+                                  decoration-muted="answer == 'no_answer' and not display_type == 'line_section'"
+                                  decoration-success="answer == 'yes'"
+                                  decoration-danger="answer == 'no'"
+                            edit="0" delete="0" editable="bottom" expand="1"  multi_edit="1" limit="100"
+                            >
+
+                                <control>
+                                    <create name="add_check_list_question_control" string="Añadir Check"/>
+                                    <create name="add_check_list_section_control" string="Añadir Sección" context="{'default_display_type': 'line_section'}"/>
+                                </control>
+                                <field name="display_type" invisible="1"/>
+                                <field name="name" widget="section_and_note_text" placeholder="Cuestiones a responder por parte de RRHH"/>
+                                <field name="answer" string="SI / NO" placeholder="SI / NO"/>
+                                <field name="document_date" string="FECHA DEL DOCUMENTO"  placeholder="Indicar fecha documento o acta"/>
+                                <field name="comment" string="COMENTARIOS" placeholder="Comentarios a tener en cuenta a la hora de dar respuesta"/>
+
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Projects" name="projects">
+                        <field name="project_id" string="Projects"  widget="one2many"  readonly="1"/>
+                    </page>
+                </notebook>
+
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="project_checklist_act_window" model="ir.actions.act_window">
+    <field name="name">Project Check List</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">project.checklist</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('is_template', '=', False)]</field>
+    <field name="context">{}</field>
+    <field name="view_id" ref="project_checklist__tree_view"/>
+    <field name="search_view_id" ref="project_checklist__search_view"/>
+    <field name="help" type="html">
+
+        <p class="o_view_nocontent_smiling_face">
+           No Project Check list created Yet.
+        </p>
+
+    </field>
+</record>
+
+
+<!--
+
+    **************************** TEMPLATE CHECKLIST ****************************
+
+-->
+<record id="project_checklist__form_view_template" model="ir.ui.view">
+    <field name="name">project.checklist.form.view.template</field>
+    <field name="model">project.checklist</field>
+    <field name="arch" type="xml">
+        <form string="Project Check List Form Template" >
+
+            <header>
+                <field name="active" invisible="1"/>
+            </header>
+
+            <sheet>
+                <div class="oe_title">
+                    <div>
+                        <h3 class="d-flex justify-content-center pt-3 form-title">
+                            <field name="name" nolabel="1"/>
+                        </h3>
+                        <group>
+                            <field name="is_template" widget="boolean_toggle" string="Template CheckList"/>
+                        </group>
+                      </div>
+                 </div>
+                <group name="group_main_1">
+                    <group name="group_info_1">
+                       <field name="project_id" string="Project" widget="many2many_tags" readonly="1"/>
+                        <field name="company_id" />
+                        <field name="partner_id" string="Contact" />
+                        <field name="title" string="Cargo" />
+                    </group>
+                    <group col="1" name="group_info_2"></group>
+
+                     <group name="group_info_3">
+                         <field name="phone" string="Telefono Oficina" />
+                        <field name="mobile" string="Telefono Móvil" />
+                    </group>
+                    <group name="group_info_4">
+                        <field name="street" string="Dirección"/>
+                        <field name="email" string="Email"/>
+                     </group>
+
+                    <group col="1" name="group_info_5">
+                        <field class="oe_inline" name="rlt_company" string="¿Dispone la empresa de RLT?" widget="radio"/>
+                    </group>
+                    <group col="1" name="group_info_6">
+                        <field class="oe_inline" name="rlt_all_working_place" string="¿Está presente la RLT en todos los centros de trabajo?" widget="radio"/>
+                    </group>
+                </group>
+
+                <group name="group_equality_data" string="DATOS DE IGUALDAD"  class="enterprise-override">
+                    <group>
+                        <field name="sale_agent_id" string="Nombre Agente de Igualdad:"/>
+                        <field name="equality_commission" string="Comisión de Igualdad:"/>
+                    </group>
+                    <group>
+                         <field name="working_people_number" string="Número de personas trabajadoras:" />
+                         <field name="work_place" string="Centros de trabajo:" />
+                         <field name="agreement" string="Convenio:" />
+                    </group>
+                </group>
+                <notebook>
+                    <page string="License Lines" name="license_lines">
+                        <field name="check_list_line" widget="section_and_note_one2many"  mode="tree">
+                             <tree string="License Order Lines"
+                                  decoration-muted="answer == 'no_answer' and not display_type == 'line_section'"
+                                  decoration-success="answer == 'yes'"
+                                  decoration-danger="answer == 'no'"
+                            edit="0" editable="bottom" expand="1"  multi_edit="1" limit="100"
+                            >
+
+                                <control>
+                                    <create name="add_check_list_question_control" string="Añadir Check"/>
+                                    <create name="add_check_list_section_control" string="Añadir Sección" context="{'default_display_type': 'line_section'}"/>
+                                </control>
+                                <field name="display_type" invisible="1"/>
+                                <field name="name" widget="section_and_note_text" placeholder="Cuestiones a responder por parte de RRHH"/>
+                                <field name="answer" string="SI / NO" placeholder="SI / NO"/>
+                                <field name="document_date" string="FECHA DEL DOCUMENTO"  placeholder="Indicar fecha documento o acta"/>
+                                <field name="comment" string="COMENTARIOS" placeholder="Comentarios a tener en cuenta a la hora de dar respuesta"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="project_checklist_act_window_template" model="ir.actions.act_window">
+    <field name="name">Template Check List</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">project.checklist</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('is_template', '=', True)]</field>
+    <field name="context">{}</field>
+    <field name="search_view_id" ref="project_checklist__search_view"/>
+    <field name="help" type="html">
+
+        <p class="o_view_nocontent_smiling_face">
+           No Template Check list created Yet.
+        </p>
+
+    </field>
+</record>
+
+<record id="project_checklist_act_window_view_template_tree" model="ir.actions.act_window.view">
+   <field name="sequence" eval="1"/>
+   <field name="view_mode">tree</field>
+   <field name="view_id" ref="project_checklist__tree_view"/>
+   <field name="act_window_id" ref="project_checklist_act_window_template"/>
+</record>
+
+<record id="project_checklist_act_window_view_template_form" model="ir.actions.act_window.view">
+   <field name="sequence" eval="2"/>
+   <field name="view_mode">form</field>
+   <field name="view_id" ref="project_checklist__form_view_template"/>
+   <field name="act_window_id" ref="project_checklist_act_window_template"/>
+</record>
+
+
+<!--
+
+    **************************** MENU ****************************
+
+-->
+
+<!-- Project -->
+<menuitem
+        id="menu_projects__check_list_menu"
+        name="Check List"
+        parent="project.menu_main_pm"
+        sequence="1"
+/>
+
+    <menuitem
+        id="menu_projects__check_list_menu_main"
+        name="Project Check List"
+        parent="menu_projects__check_list_menu"
+        sequence="1"
+        action="project_checklist_act_window"
+
+    />
+
+    <menuitem
+        id="menu_projects__check_list_menu_template"
+        name="Template Check List"
+        parent="menu_projects__check_list_menu"
+        sequence="2"
+        action="project_checklist_act_window_template"
+
+    />
+
+<!-- Sale -->
+<menuitem
+        id="menu_sale__check_list_menu"
+        name="Check List"
+        parent="sale.sale_menu_root"
+        sequence="4"
+        action="project_checklist_act_window"
+/>
+
+<!--
+
+    **************************** CHECKLIST LINE ****************************
+
+-->
+
+<record id="project_checklist_line__search_view" model="ir.ui.view">
+    <field name="name">project.checklist.line_search_view</field>
+    <field name="model">project.checklist.line</field>
+    <field name="arch" type="xml">
+        <search string="Search Check List Line">
+            <field name="name" string="Description"/>
+        </search>
+    </field>
+</record>
+
+</odoo>

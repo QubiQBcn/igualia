@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        <template id="extra_features_static_custom_front_end" name="Custom Front-End" inherit_id="website.assets_frontend">-->
+<!--            <xpath expr="link[last()]" position="after">-->
+<!--               <link rel="stylesheet" href="/extra_features_gruposgp/static/src/css/custom.css"/>-->
+<!--                <script type="text/javascript"  src="/extra_features_gruposgp/static/src/js/custom.js"></script>  -->
+<!--            </xpath>-->
+<!--        </template>-->
+
+        <template id="extra_features_static_custom_back_end" name="Custom Back-End" inherit_id="website.assets_backend">
+            <xpath expr="link[last()]" position="after">
+                <link rel="stylesheet" href="/extra_features_gruposgp/static/src/css/custom.css"/>
+                <script type="text/javascript"  src="/extra_features_gruposgp/static/src/js/stateSelectionWidgetCustom.js"></script>
+                <script type="text/javascript"  src="/extra_features_gruposgp/static/src/js/stateOne2ManyWidget.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

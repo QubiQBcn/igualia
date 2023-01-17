@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dynamic_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-02 12:01+0000\n"
+"PO-Revision-Date: 2022-12-02 12:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dynamic_reports
+#: model:ir.model.fields,field_description:dynamic_reports.field_product_product__description_reports
+#: model:ir.model.fields,field_description:dynamic_reports.field_product_template__description_reports
+msgid "Description for reports"
+msgstr "Descripción para informes"
+
+#. module: dynamic_reports
+#: model_terms:ir.ui.view,arch_db:dynamic_reports.dr_product_template_common_form_custom
+msgid "HTML Reports"
+msgstr "Informes HTML"
+
+#. module: dynamic_reports
+#: model:ir.model,name:dynamic_reports.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: dynamic_reports
+#: model_terms:ir.ui.view,arch_db:dynamic_reports.dr_product_template_common_form_custom
+msgid "Reports"
+msgstr "Informes"

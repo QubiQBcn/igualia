@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ig_res_partner_form" model="ir.ui.view">
+        <field name="name">ig.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="type_contact" />
+            </xpath>
+            <xpath expr="//group[@colspan='5'][2]" position="inside">
+                <field name="type_contact" />
+            </xpath>
+            <xpath expr="//div[@class='oe_kanban_details']/field[@name='name']" position="after">
+                <div t-if="record.type_contact.raw_value">Type Contact: <field name="type_contact"/></div>
+            </xpath>
+        </field>
+    </record>
+    <record id="ig_view_partner_form_extra_features" model="ir.ui.view">
+        <field name="name">ig.view.partner.form.extra.features</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="extra_features_gruposgp.view_partner_form_extra_features"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='deal']" position="after">
+                <field name="number_work_centers" />
+                <field name="department_numbers" />
+                <field name="rlt" />
+            </xpath>
+        </field>
+    </record>
+    <record id="ig_res_partner_form_website_inherit" model="ir.ui.view">
+        <field name="name">ig.res.partner.form.website.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="website.view_partner_form_inherit_website"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+<!-- res.partner | FOMR | Buttons -->
+<record id="view_partner_form_document_partner_buttons" model="ir.ui.view">
+    <field name="name">res.partner.form.document.partner.buttons</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form" />
+    <field name="priority">200</field>
+    <field name="arch" type="xml">
+
+
+        <div name="button_box" position="inside">
+           <button
+                class="oe_stat_button"
+                icon="fa-book"
+                name="action_get_attachment_tree_view"
+                type="object"
+            >
+                <field name="document_count" widget="statinfo" string="Documents" />
+            </button>
+        </div>
+    </field>
+</record>
+
+<!-- res.partner | FOMR -->
+<record id="view_partner_form_document_partner" model="ir.ui.view">
+    <field name="name">res.partner.form.document.partner</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form" />
+    <field name="priority">200</field>
+    <field name="arch" type="xml">
+
+
+        <xpath expr="//page[@name='internal_notes']" position="before">
+            <page name='documents' string="Documents">
+                <field name="message_owned_documents_ids" mode="tree,kanban">
+
+                    <tree editable="bottom" create="true" delete="true">
+                        <field name='attachment_name' string="Name"/>
+                        <field name="description" string="Description"/>
+<!--                        <field name="datas" string="File Content"/>-->
+                        <field name="create_uid" string="Created By"/>
+                        <field name="create_date" string="Created on"/>
+                        <field name="name" string="File Name"/>
+                    </tree>
+
+                    <kanban class="o_kanban_mobile">
+                            <field name="attachment_name"/>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="create_uid"/>
+                            <field name="create_date"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <strong><span><t t-esc="record.attachment_name.value"/></span></strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6 text-muted">
+                                                <span><t t-esc="record.name.value"/></span>
+                                            </div>
+                                            <div class="col-6">
+                                                <span class="pull-right text-right">
+                                                    <span><t t-esc="record.create_uid.value"/></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span><t t-esc="record.description.value"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+
+                </field>
+
+
+            </page>
+
+        </xpath>
+    </field>
+</record>
+
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="product_category_form_commission_view" model="ir.ui.view">
+    <field name="name">view.product.category.commision.form</field>
+    <field name="model">product.category</field>
+    <field name='inherit_id' ref='product.product_category_form_view'/>
+    <field name="arch" type="xml">
+      <group name="first" position="after">
+        <group name="commission" string="Commissions">
+          <field name="commission_qty"/>
+          <field name="commission_ids" nolabel="1" colspan="2">
+            <tree editable="bottom">
+            <!--   WARN: Deprecated BUT DO NOT DELETE-->
+              <field name="agent_id" invisible="1"/>
+               <!--  added itundra-->
+              <field name="agent_id_hr" />
+              <field name="commission"/>
+            </tree>
+          </field>
+        </group>
+      </group>
+    </field>
+  </record>
+
+</odoo>

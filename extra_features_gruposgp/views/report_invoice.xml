@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo><data>
+
+<template id="extra_features_gruposgp__report_invoice_document" inherit_id="account.report_invoice_document" >
+    <xpath expr="//p[@name='payment_term']" position="replace"/>
+    <xpath expr="//div[@name='origin']" position="replace">
+        <div class="col-auto mw-100 mb-2"  name="payment_term">
+            <strong>Payment Terms:</strong>
+             <p class="m-0"  t-field="o.invoice_payment_term_id"/>
+        </div>
+    </xpath>
+
+    <xpath expr="//p[@name='comment']" position="after">
+         <p name="payment_term2">
+            <span t-field="o.invoice_payment_term_id.note"/>
+        </p>
+    </xpath>
+
+</template>
+
+</data></odoo>
