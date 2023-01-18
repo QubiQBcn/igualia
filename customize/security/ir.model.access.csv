@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_category_agent_commission,access_product_category_agent_commission,model_product_category_agent_commission,base.group_user,1,0,0,0
-access_product_category_agent_commission_admin,access_product_category_agent_commission_admin,model_product_category_agent_commission,sales_team.group_sale_manager,1,1,1,1
-
-access_project_calculate_duration,access_project_calculate_duration,model_project_calculate_duration,base.group_user,1,1,1,1

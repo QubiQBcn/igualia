@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-   <template id="assets_backend" name="Auto Refresh assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/customize/static/src/css/custom.css"/>
-            <script type="text/javascript"  src="/customize/static/src/js/list_multi_tab.js"></script>
-         </xpath>
-    </template>
-</odoo>
